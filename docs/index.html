@@ -328,6 +328,25 @@
             display: none;
         }
 
+        /* 为不同图标设置不同颜色 */
+        .sidebar li:nth-child(1) i {
+            color: #FF5733;
+        }
+        .sidebar li:nth-child(2) i {
+            color: #EA7186;
+        }
+        .sidebar li:nth-child(3) i {
+            color: #7A77B9;
+        }
+        .sidebar li:nth-child(4) i {
+            color: #BD9DEA;
+        }
+
+        /* 点击时图标显示相同颜色 */
+        .sidebar li a.active i {
+            color: #007BFF;
+        }
+
         .sidebar li i {
             margin-right: 10px;
         }
@@ -357,26 +376,25 @@
                 <!-- 打字效果容器 -->
                 <div id="typing-text"></div>
                 <h2>个人简介</h2>
-                <p>我是马跃，从西南林业大学顺利完成本科学业。在攻读硕士期间，我专注于全球变化生态学，深入探索了该领域的前沿问题，致力于通过理论研究和实验验证相结合的方法，为相关领域的发展贡献自己的力量。我对科研充满热情，具备较强的问题解决能力和团队协作精神。</p>
-		<p>如果有相同或者相似的研究方向，爱好或者问题欢迎和我联系</p>    
+                <p>我是马跃，刚刚从西南林业大学顺利完成本科学业。在攻读硕士期间，我专注于全球变化生态学，深入探索了该领域的前沿问题，致力于通过理论研究和实验验证相结合的方法，为相关领域的发展贡献自己的力量。我对科研充满热情，具备较强的问题解决能力和团队协作精神。</p>
             </section>
-<section id="education">
-    <h2>教育经历</h2>
-    <ul>
-        <li>
-            <img src="images/university.jpg" alt="华中农业大学校徽" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
-            <strong>[华中农业大学] - 硕士学位（[2024]-[未知]）</strong><br>
-            专业：[生态学]<br>
-            研究方向：[全球变化生态学]。在学期间，发表了多篇高质量的学术论文，参与了多项重要的科研项目。
-        </li>
-        <li>
-            <img src="images/swfu.png" alt="西南林业大学校徽" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
-            <strong>[西南林业大学] - 学士学位（[2019]-[2024]）</strong><br>
-            专业：[生态学]。<br>
-            本科阶段成绩优异。
-        </li>
-    </ul>
-</section>
+            <section id="education">
+                <h2>教育经历</h2>
+                <ul>
+                    <li>
+                        <img src="images/university.jpg" alt="华中农业大学校徽" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
+                        <strong>[华中农业大学] - 硕士学位（[2024]-[未知]）</strong><br>
+                        专业：[生态学]<br>
+                        研究方向：[全球变化生态学]。在学期间，发表了多篇高质量的学术论文，参与了多项重要的科研项目。
+                    </li>
+                    <li>
+                        <img src="images/swfu.png" alt="西南林业大学校徽" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
+                        <strong>[西南林业大学] - 学士学位（[2019]-[2024]）</strong><br>
+                        专业：[生态学]。<br>
+                        本科阶段成绩优异。
+                    </li>
+                </ul>
+            </section>
             <section id="honors">
                 <h2>曾获荣誉</h2>
                 <ul>
@@ -515,17 +533,27 @@
                     });
                     const targetSection = document.getElementById(targetId);
                     targetSection.classList.add('show');
+
+                    // 移除所有链接的 active 类
+                    sidebarLinks.forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    // 为当前点击的链接添加 active 类
+                    this.classList.add('active');
                 });
             });
 
             // 初始显示个人介绍部分
             const firstSection = document.getElementById('personal-intro');
             firstSection.classList.add('show');
-	 // 打字效果文本数组
+            // 初始激活第一个侧边栏链接
+            sidebarLinks[0].classList.add('active');
+
+            // 打字效果文本数组
             const texts = [
                 "欢迎来到我的个人网页！🧐",
                 "这里有我的教育经历和荣誉。🏆",
-	"这里也有我的成果和技术✨",
+                "这里也有我的成果和技术✨",
                 "希望能与你有更多的交流！✏"
             ];
             let currentTextIndex = 0;
