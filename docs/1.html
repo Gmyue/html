@@ -7,82 +7,22 @@
     <title>个人简介 - [博士生姓名]</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
 
         body {
             font-family: 'Noto Serif', serif;
             line-height: 1.8;
             margin: 0;
             padding: 0;
-            background: url('images/background.jpg') no-repeat center center fixed;
+            /*background: url('images/background.jpg') no-repeat center center fixed;*/
             background-size: cover;
             color: #333;
             overflow-x: hidden;
         }
 
-        /* 页面过渡动画 */
-        .page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            min-height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
         .page.active {
             opacity: 1;
             visibility: visible;
-        }
-
-        /* 初始页面样式 */
-        #initial-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: linear-gradient(45deg, #1a4d2e 0%, #2e7d32 100%);
-            color: white;
-            position: relative;
-            height: 200vh;
-            overflow: hidden;
-        }
-
-        #initial-page .text-item {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        #initial-page .text-item.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #initial-page button {
-            padding: 1em 2em;
-            font-size: 1.2em;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            animation: fadeInUp 1s ease-out 0.6s;
-            animation-fill-mode: backwards;
-            z-index: 1;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        #initial-page button.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #initial-page button:hover {
-            background-color: #0056b3;
         }
 
         /* 背景动画 */
@@ -149,7 +89,8 @@
         /* 地球元素图标样式 */
         .earth-icon {
             position: absolute;
-            background-image: url('https://dummyimage.com/100x100/0000ff/ffffff'); /* 地球占位图 */
+            background-image: url('https://dummyimage.com/100x100/0000ff/ffffff');
+            /* 地球占位图 */
             background-size: cover;
             z-index: 0;
             opacity: 0;
@@ -176,27 +117,17 @@
             visibility: visible;
         }
 
-        /* 介绍页面样式（之前的内容） */
-        #intro-page header {
-            background-color: rgba(34, 34, 34, 0.9);
-            color: white;
-            text-align: center;
-            padding: 3em 0;
-            transition: background-color 0.3s ease;
-        }
-
-        #intro-page header:hover {
-            background-color: rgba(34, 34, 34, 1);
-        }
-
+        /* 介绍页面样式 */
         #intro-page main {
             max-width: 900px;
             margin: 2em auto;
             padding: 2em;
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            color: black;
             border-radius: 10px;
             transition: transform 0.3s ease;
+            text-align: center;
         }
 
         #intro-page main:hover {
@@ -210,10 +141,17 @@
             border-radius: 8px;
             background-color: rgba(255, 255, 255, 0.95);
             transition: box-shadow 0.3s ease;
+            display: none; /* 默认隐藏所有介绍部分 */
         }
 
-        #intro-page section:hover {
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        #intro-page section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        #intro-page section:not(.show) {
+            display: none;
+            animation: fadeOut 0.5s ease;
         }
 
         #intro-page h2 {
@@ -273,66 +211,159 @@
                 transform: translateY(-20px);
             }
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* 左边栏样式 */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            z-index: 2;
+            transition: width 0.3s ease, background-color 0.3s ease;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar.collapsed {
+            width: 50px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 60px;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar li:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        /* 打字效果容器样式 */
+        #typing-text {
+            font-size: 24px;
+            margin-top: 15px;
+            text-align: center;
+            /* 设置固定高度，可根据实际情况调整 */
+            height: 60px;
+            line-height: 60px;
+        }
+
+        .sidebar a:hover {
+            color: #007BFF;
+        }
+
+        /* 侧边栏切换按钮样式 */
+        #sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: left 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .sidebar.collapsed + #sidebar-toggle {
+            left: 10px;
+        }
+
+        /* 鼠标悬停在侧边栏时改变背景颜色 */
+        .sidebar:hover {
+            background-color: rgba(30, 30, 30, 0.9);
+        }
+
+        /* 侧边栏收缩后隐藏文字显示图标 */
+        .sidebar.collapsed li span {
+            display: none;
+        }
+
+        .sidebar li i {
+            margin-right: 10px;
+        }
     </style>
 </head>
 
 <body>
-    <!-- 初始页面 -->
-    <div class="page" id="initial-page">
-        <div class="mask"></div>
-        <div class="bg-animation">
-            <span style="left: 10%; animation-delay: 0s;"></span>
-            <span style="left: 25%; animation-delay: 1s;"></span>
-            <span style="left: 40%; animation-delay: 2s;"></span>
-            <span style="left: 55%; animation-delay: 3s;"></span>
-            <span style="left: 70%; animation-delay: 4s;"></span>
-            <span style="left: 85%; animation-delay: 5s;"></span>
-            <span style="left: 15%; animation-delay: 2.5s;"></span>
-            <span style="left: 30%; animation-delay: 3.5s;"></span>
-            <span style="left: 60%; animation-delay: 1.5s;"></span>
-            <span style="left: 80%; animation-delay: 0.5s;"></span>
-        </div>
-        <!-- 植物类元素 -->
-        <div class="plant" style="left: 5%; bottom: 10%; width: 50px; height: 100px;"></div>
-        <div class="plant" style="left: 20%; bottom: 15%; width: 60px; height: 120px;"></div>
-        <div class="plant" style="left: 35%; bottom: 5%; width: 40px; height: 80px;"></div>
-        <div class="plant" style="right: 5%; bottom: 12%; width: 55px; height: 110px;"></div>
-        <div class="plant" style="right: 20%; bottom: 8%; width: 45px; height: 90px;"></div>
-        <div class="plant" style="right: 35%; bottom: 18%; width: 65px; height: 130px;"></div>
-        <!-- 地球元素图标 -->
-        <div class="earth-icon" style="left: 50%; top: 20%; width: 100px; height: 100px; transform: translateX(-50%);"></div>
-        <div class="earth-icon" style="left: 10%; top: 50%; width: 80px; height: 80px;"></div>
-        <div class="earth-icon" style="right: 10%; top: 60%; width: 90px; height: 90px;"></div>
-        <div class="text-item">
-            <h1>欢迎来到我的学术天地</h1>
-        </div>
-        <div class="text-item">
-            <p>我是 [博士生姓名]，一名刚毕业的博士生。在这里，你将了解到我的学术旅程、研究成果和荣誉。让我们一起开启探索之旅吧！</p>
-        </div>
-        <div class="scroll-content">
-            <p>在我的学术生涯中，我一直致力于 [研究方向] 的深入探索。通过不断的学习和实践，我积累了丰富的经验和知识。</p>
-            <p>我参与了多个重要的科研项目，与优秀的团队合作，共同攻克了许多难题。这些经历不仅提升了我的专业能力，也培养了我的团队协作精神。</p>
-            <p>期待在这个网站上与你分享我的学术成果和故事，一起交流和成长！</p>
-        </div>
-        <button id="explore-button" onclick="showIntroPage()">开始探索</button>
+    <canvas id="particle-canvas"></canvas>
+    <!-- 侧边栏切换按钮 -->
+    <button id="sidebar-toggle">☰</button>
+    <!-- 左边栏 -->
+    <div class="sidebar collapsed">
+        <ul>
+            <li><a href="#personal-intro" data-target="personal-intro"><i class="fa-solid fa-user"></i><span>个人介绍</span></a></li>
+            <li><a href="#education" data-target="education"><i class="fa-solid fa-graduation-cap"></i><span>教育经历</span></a></li>
+            <li><a href="#honors" data-target="honors"><i class="fa-solid fa-trophy"></i><span>曾获荣誉</span></a></li>
+            <li><a href="#contact" data-target="contact"><i class="fa-solid fa-envelope"></i><span>联系方式</span></a></li>
+        </ul>
     </div>
     <!-- 介绍页面 -->
     <div class="page" id="intro-page">
-        <header>
-            <img class="profile-picture" src="images/profile.jpg" alt="个人照片">
-            <h1>[博士生姓名]</h1>
-            <p>刚毕业的博士生</p>
-        </header>
         <main>
             <section id="personal-intro">
+                <img class="profile-picture" src="images/profile.jpg" alt="个人照片">
+                <h1>马跃</h1>
+                <p>在读研究生一枚</p>
+                <!-- 打字效果容器 -->
+                <div id="typing-text"></div>
                 <h2>个人简介</h2>
-                <p>我是[博士生姓名]，刚刚从[毕业院校]顺利完成博士学业。在攻读博士期间，我专注于[研究方向]，深入探索了该领域的前沿问题，致力于通过理论研究和实验验证相结合的方法，为相关领域的发展贡献自己的力量。我对科研充满热情，具备较强的问题解决能力和团队协作精神。</p>
+                <p>我是马跃，刚刚从西南林业大学顺利完成本科学业。在攻读硕士期间，我专注于全球变化生态学，深入探索了该领域的前沿问题，致力于通过理论研究和实验验证相结合的方法，为相关领域的发展贡献自己的力量。我对科研充满热情，具备较强的问题解决能力和团队协作精神。</p>
             </section>
             <section id="education">
                 <h2>教育经历</h2>
                 <ul>
-                    <li><strong>[华中农业大学] - 博士学位（[入学时间]-[毕业时间]）</strong><br>专业：[专业名称]<br>研究方向：[研究方向]。在学期间，发表了多篇高质量的学术论文，参与了多项重要的科研项目。</li>
-                    <li><strong>[西南林业大学] - 学士学位（[入学时间]-[毕业时间]）</strong><br>专业：[专业名称]。本科阶段成绩优异，获得过多次奖学金。</li>
+                    <li><strong>[华中农业大学] - 硕士学位（[2024]-[未知]）</strong><br>专业：[生态学]<br>研究方向：[全球变化生态学]。在学期间，发表了多篇高质量的学术论文，参与了多项重要的科研项目。</li>
+                    <li><strong>[西南林业大学] - 学士学位（[2019]-[2024]）</strong><br>专业：[生态学]。<br>本科阶段成绩优异。</li>
                 </ul>
             </section>
             <section id="honors">
@@ -346,69 +377,172 @@
             <section id="contact">
                 <h2>联系方式</h2>
                 <ul>
-                    <li>邮箱：<a href="mailto:[邮箱地址]">[邮箱地址]</a></li>
-                    <li>电话：[电话号码]</li>
+                    <li>电话：[18826335671]</li>
+                    <li>邮箱：<a href="mailto:[ningyao5675@163.com]">[ningyao5675@163.com]</a></li>
+                    <li>Github:<a href="https://github.com/Gmyue">[https://github.com/Gmyue]</a></li>
                 </ul>
             </section>
         </main>
     </div>
-
     <script>
-        function showIntroPage() {
-            document.getElementById('initial-page').classList.remove('active');
-            document.getElementById('intro-page').classList.add('active');
-        }
-
         // 页面加载时显示初始页面
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('initial-page').classList.add('active');
-            const textItems = document.querySelectorAll('#initial-page .text-item');
-            const startButton = document.querySelector('#initial-page button');
-            const plants = document.querySelectorAll('.plant');
-            const earthIcons = document.querySelectorAll('.earth-icon');
+            // 侧边栏切换功能
+            const sidebar = document.querySelector('.sidebar');
+            const toggleButton = document.getElementById('sidebar-toggle');
+            toggleButton.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+            });
 
-            let index = 0;
-            const showNextText = () => {
-                if (index < textItems.length) {
-                    textItems[index].classList.add('show');
-                    index++;
-                    setTimeout(showNextText, 1000);
-                } else {
-                    startButton.classList.add('show');
-                    plants.forEach(plant => plant.classList.add('show'));
-                    earthIcons.forEach(icon => icon.classList.add('show'));
+            // 粒子群效果
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const maxDistance = 150;
+            let mouse = { x: 0, y: 0 };
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 2;
+                    this.vy = (Math.random() - 0.5) * 2;
+                    this.radius = 2;
                 }
-            };
 
-            showNextText();
-        });
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
 
-        // 滚动时显示内容
-        window.addEventListener('scroll', function () {
-            const scrollContent = document.querySelector('.scroll-content');
-            const scrollPosition = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const elementPosition = scrollContent.getBoundingClientRect().top + window.scrollY;
+                    if (this.x < 0 || this.x > canvas.width) {
+                        this.vx = -this.vx;
+                    }
+                    if (this.y < 0 || this.y > canvas.height) {
+                        this.vy = -this.vy;
+                    }
+                }
 
-            if (scrollPosition > elementPosition - windowHeight + 200) {
-                scrollContent.classList.add('show');
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'black';
+                    ctx.fill();
+                }
             }
 
-            // 向下滚动遮罩消失
-            const mask = document.querySelector('.mask');
-            const scrollPercent = scrollPosition / (document.body.scrollHeight - window.innerHeight);
-            mask.style.opacity = 1 - scrollPercent;
-
-            // 滚动到底部显示按钮
-            const exploreButton = document.getElementById('explore-button');
-            if (scrollPosition + windowHeight >= document.body.scrollHeight) {
-                exploreButton.classList.add('show');
-            } else {
-                exploreButton.classList.remove('show');
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
             }
+
+            function drawLines() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < maxDistance) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 0, 0, ${1 - distance / maxDistance})`;
+                            ctx.stroke();
+                        }
+                    }
+
+                    const dxMouse = particles[i].x - mouse.x;
+                    const dyMouse = particles[i].y - mouse.y;
+                    const distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+                    if (distanceMouse < maxDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.strokeStyle = `rgba(0, 0, 0, ${1 - distanceMouse / maxDistance})`;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                drawLines();
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('mousemove', function (e) {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            window.addEventListener('resize', function () {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            animate();
+
+            // 侧边栏链接点击事件
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.dataset.target;
+                    const sections = document.querySelectorAll('#intro-page section');
+                    sections.forEach(section => {
+                        section.classList.remove('show');
+                    });
+                    const targetSection = document.getElementById(targetId);
+                    targetSection.classList.add('show');
+                });
+            });
+
+            // 初始显示个人介绍部分
+            const firstSection = document.getElementById('personal-intro');
+            firstSection.classList.add('show');
+	 // 打字效果文本数组
+            const texts = [
+                "欢迎来到我的个人网页！🧐",
+                "这里有我的教育经历和荣誉。🏆",
+	"这里也有我的成果和技术✨",
+                "希望能与你有更多的交流！✏"
+            ];
+            let currentTextIndex = 0;
+            const typingTextElement = document.getElementById('typing-text');
+
+            function typeText(text, index) {
+                if (index < text.length) {
+                    typingTextElement.textContent += text.charAt(index);
+                    setTimeout(() => typeText(text, index + 1), 100);
+                } else {
+                    setTimeout(() => eraseText(text), 2000);
+                }
+            }
+
+            function eraseText(text) {
+                if (text.length > 0) {
+                    typingTextElement.textContent = text.slice(0, -1);
+                    setTimeout(() => eraseText(typingTextElement.textContent), 50);
+                } else {
+                    currentTextIndex = (currentTextIndex + 1) % texts.length;
+                    setTimeout(() => typeText(texts[currentTextIndex], 0), 1000);
+                }
+            }
+
+            // 开始打字效果
+            typeText(texts[currentTextIndex], 0);
         });
     </script>
 </body>
 
-</html>
-    
+</html>    
